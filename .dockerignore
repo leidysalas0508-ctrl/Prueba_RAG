@@ -1,0 +1,26 @@
+
+# Claves privadas
+.env
+.env.*
+!.env.example
+
+# Entorno virtual
+.venv/
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Documentos y datos locales
+data/
+
+# Archivos de Git
+.git/
+
+# Archivos del editor
+.vscode/
+
+# Archivos temporales
+*.log
+

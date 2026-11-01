@@ -1,0 +1,26 @@
+# Claves privadas y configuraciones sensibles
+.env
+.env.*
+
+# Entorno virtual de Python
+.venv/
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Documentos e imágenes procesadas
+data/uploads/
+data/imagenes/
+data/procesados/
+
+# Archivos temporales
+.pytest_cache/
+
+# Base de datos vectorial local
+data/base_vectorial/
+
+# Registro local de trabajos
+data/trabajos.json
+data/trabajos.tmp
+!.env.example
