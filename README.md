@@ -1,214 +1,272 @@
 
-# Sistema de preguntas y respuestas sobre documentos PDF utilizando inteligencia artificial
+# Sistema RAG Multimodal para consultar documentos PDF
 
-## 1. ¿De qué trata este proyecto?
+## 1. ¿Por qué se realizó este proyecto?
 
-Este proyecto consiste en una aplicación web que permite subir documentos PDF y hacer preguntas sobre la información que contienen.
+Este proyecto fue desarrollado como parte de una prueba técnica para el cargo de Ingeniero de Software enfocado en la integración de inteligencia artificial en La Fortuna S.A.
 
-Por ejemplo, si una persona sube un documento de varias páginas, no necesita leerlo completamente para encontrar un dato específico. Puede escribir una pregunta y el sistema intenta localizar la información relacionada dentro del PDF.
+El propósito de la prueba es demostrar cómo se pueden integrar diferentes herramientas de programación e inteligencia artificial para construir una aplicación que permita consultar información de documentos PDF.
 
-Para conseguirlo, utilizamos una técnica llamada RAG, que combina la búsqueda de información con un modelo de inteligencia artificial.
+En muchas ocasiones, los documentos contienen varias páginas, imágenes y datos técnicos. Encontrar una información específica puede tomar tiempo si debemos revisar todo el archivo manualmente.
 
-Además de mostrar la respuesta, la aplicación indica de qué documento y página se obtuvo la información. También permite visualizar imágenes que fueron extraídas del PDF.
+Por esta razón, desarrollé un sistema que permite cargar documentos PDF y hacer preguntas sobre su contenido.
 
-Este sistema fue desarrollado como parte de una prueba técnica para demostrar conocimientos de programación, bases de datos e integración de inteligencia artificial.
+El objetivo es facilitar la búsqueda de información y presentar respuestas acompañadas de las fuentes consultadas.
 
-## 2. ¿Qué significa RAG?
+Durante el desarrollo también pude aplicar conocimientos de Python, desarrollo de API, manejo de archivos, bases de datos y pruebas de software, además de aprender a integrar nuevas herramientas de inteligencia artificial.
 
-RAG significa *Retrieval-Augmented Generation*, que en español se puede entender como **generación de respuestas apoyada en la búsqueda de información**.
+## 2. ¿De qué trata este proyecto?
 
-La idea es sencilla:
+Este proyecto consiste en una aplicación web que permite subir documentos PDF y realizar preguntas sobre la información que contienen.
 
-Normalmente, cuando hacemos una pregunta a una inteligencia artificial, esta responde utilizando los conocimientos que aprendió durante su entrenamiento.
+Por ejemplo, si una persona carga un documento de varias páginas, puede preguntar de qué trata, qué información incluye o dónde se menciona un tema específico.
 
-En un sistema RAG hacemos algo diferente: primero buscamos información dentro de nuestros propios documentos y después se la entregamos a la inteligencia artificial para que responda utilizando ese contenido.
+El sistema busca información relacionada dentro del PDF y utiliza Google Gemini para generar una respuesta basada en el contenido recuperado.
 
-En nuestro proyecto seguimos estos pasos:
+Además, la aplicación muestra el nombre del documento y las páginas utilizadas como fuentes.
 
-1. El usuario sube un PDF.
-2. El sistema extrae su contenido.
-3. El texto se divide en partes más pequeñas.
-4. Esas partes se guardan para poder buscarlas.
-5. El usuario escribe una pregunta.
-6. El sistema busca las partes del documento más relacionadas con la pregunta.
-7. Google Gemini recibe la pregunta y la información encontrada.
-8. La aplicación muestra la respuesta y las fuentes utilizadas.
+También permite visualizar imágenes extraídas del archivo PDF.
 
-**¿Por qué utilizamos RAG?**
+Para conseguirlo, utilicé una técnica llamada RAG.
 
-Porque queremos que las respuestas estén relacionadas con los documentos proporcionados por el usuario y no dependan únicamente de lo que la inteligencia artificial sabe de manera general.
+## 3. ¿Qué significa RAG?
 
-Esto ayuda a obtener respuestas más enfocadas, aunque no garantiza que siempre sean correctas.
+RAG significa *Retrieval-Augmented Generation*, que en español puede entenderse como generación de respuestas apoyada en la recuperación de información.
 
-## 3. Herramientas utilizadas y para qué sirve cada una
+La idea es sencilla.
+
+Cuando hacemos una pregunta a una inteligencia artificial, normalmente esta responde utilizando los conocimientos que adquirió durante su entrenamiento.
+
+Con RAG hacemos algo diferente: primero buscamos información en nuestros propios documentos y después se la proporcionamos a la inteligencia artificial para que genere una respuesta.
+
+En este proyecto, el proceso es el siguiente:
+
+1. El usuario carga un documento PDF.
+2. El sistema extrae el texto y las imágenes.
+3. El texto se divide en fragmentos más pequeños.
+4. Se generan representaciones numéricas del texto llamadas embeddings.
+5. Los fragmentos se almacenan para facilitar las búsquedas.
+6. El usuario realiza una pregunta.
+7. El sistema busca los fragmentos más relacionados con la pregunta.
+8. Gemini recibe la pregunta y la información encontrada.
+9. La aplicación muestra una respuesta, las fuentes y, cuando corresponde, imágenes del documento.
+
+### ¿Por qué utilicé RAG?
+
+Porque quería que las respuestas estuvieran relacionadas con la información de los documentos cargados por el usuario.
+
+Esta técnica ayuda a reducir la dependencia del conocimiento general del modelo de inteligencia artificial.
+
+Sin embargo, no garantiza que todas las respuestas sean correctas. Por eso es importante mostrar las fuentes y permitir que el usuario pueda revisarlas.
+
+## 4. Herramientas utilizadas
 
 ### Python
 
-Python es el lenguaje de programación principal del proyecto.
+Python es el lenguaje de programación principal de la aplicación.
 
-Lo utilizamos para escribir las instrucciones que permiten recibir los PDF, procesar su contenido, realizar búsquedas y comunicarnos con Gemini.
+Lo utilicé para escribir el backend, la interfaz, el procesamiento de documentos y las pruebas.
 
 ### FastAPI
 
 FastAPI es una herramienta de Python que permite crear una API.
 
-Una API funciona como un medio de comunicación entre dos aplicaciones.
+Una API funciona como un medio de comunicación entre diferentes partes de una aplicación.
 
-En nuestro caso, cuando el usuario sube un PDF desde la pantalla, la interfaz necesita enviar ese archivo al sistema encargado de procesarlo. FastAPI recibe esa solicitud y coordina el trabajo.
+En este proyecto, FastAPI recibe los documentos enviados desde la interfaz, coordina su procesamiento y recibe las preguntas de los usuarios.
 
-También permite consultar el estado de un documento y enviar preguntas.
+También permite consultar el estado de cada trabajo y recuperar imágenes extraídas de los PDF.
 
 ### Streamlit
 
-Streamlit es una herramienta que permite crear interfaces web utilizando Python.
+Streamlit permite crear interfaces web utilizando Python.
 
-La usamos para construir la parte visual de nuestra aplicación.
+Lo utilicé para desarrollar la parte visual de la aplicación, porque permite construir una interfaz sencilla sin necesitar un frontend desarrollado completamente con HTML, CSS y JavaScript.
 
-Gracias a Streamlit, el usuario puede:
+Desde Streamlit, el usuario puede:
 
-- Subir un documento PDF.
-- Consultar si el documento terminó de procesarse.
+- Seleccionar y cargar un PDF.
+- Iniciar su procesamiento.
+- Consultar el estado del documento.
 - Escribir preguntas.
 - Leer las respuestas.
-- Consultar las páginas utilizadas como fuentes.
-- Visualizar imágenes extraídas del documento.
-
-Elegimos Streamlit porque permite construir una interfaz sencilla sin desarrollar por separado una aplicación completa con HTML, CSS y JavaScript.
+- Consultar las fuentes.
+- Visualizar imágenes extraídas.
 
 ### Google Gemini
 
-Gemini es el servicio de inteligencia artificial de Google que utilizamos en el proyecto.
+Gemini es el servicio de inteligencia artificial de Google utilizado en el proyecto.
 
-Cumple dos funciones principales:
+Cumple dos funciones.
 
-**Primera función: generar respuestas.**
+**Generación de embeddings:** permite convertir los textos en representaciones numéricas para buscar información relacionada por su significado.
 
-Cuando el sistema encuentra información relacionada con una pregunta, se la envía a Gemini para que redacte una respuesta.
+**Generación de respuestas:** recibe la pregunta junto con los fragmentos recuperados y produce una respuesta en lenguaje natural.
 
-**Segunda función: generar embeddings.**
+Para utilizar este servicio se necesita una clave de API, que se configura en un archivo privado llamado `.env`.
 
-Los embeddings son representaciones numéricas del texto que permiten comparar su significado.
+### ¿Qué son los embeddings?
 
-Por ejemplo, las expresiones "cómo instalar el programa" y "pasos para configurar la aplicación" tienen palabras diferentes, pero pueden tratar sobre un tema parecido.
+Los embeddings son listas de números que representan características del significado de un texto.
 
-Los embeddings ayudan a encontrar esa relación.
+Por ejemplo, las expresiones "cómo configurar el sistema" y "pasos para instalar la aplicación" pueden estar relacionadas aunque no utilicen exactamente las mismas palabras.
 
-Para utilizar Gemini necesitamos una clave de API, que guardamos en un archivo privado llamado `.env`.
+Los embeddings ayudan al sistema a encontrar fragmentos con significados parecidos.
 
 ### PyMuPDF
 
-PyMuPDF es una librería que permite trabajar con archivos PDF desde Python.
+PyMuPDF es una librería que permite trabajar con archivos PDF.
 
-La utilizamos para abrir los documentos y extraer su texto e imágenes.
+La utilicé para extraer texto e imágenes de los documentos.
 
-También recuperamos información sobre las páginas y la posición de algunos elementos.
-
-Esta es una de las primeras tareas que realiza nuestro sistema cuando se carga un documento.
+También permite obtener información sobre las páginas y las posiciones de algunos elementos, mediante coordenadas llamadas bounding boxes.
 
 ### ChromaDB
 
-ChromaDB es una base de datos diseñada para guardar y consultar información vectorial.
+ChromaDB es una base de datos vectorial.
 
-En una base de datos tradicional podemos buscar registros mediante condiciones, por ejemplo, encontrar un usuario por su identificación.
+A diferencia de una base de datos tradicional, permite almacenar representaciones numéricas del texto y buscar información con significado similar.
 
-En una base de datos vectorial podemos buscar fragmentos de texto que tengan un significado parecido a una pregunta.
+En este proyecto se utiliza para guardar los embeddings de los fragmentos y recuperarlos durante las consultas.
 
-En nuestro proyecto guardamos los embeddings de los fragmentos del PDF en ChromaDB. Después los utilizamos para buscar información relacionada con las preguntas del usuario.
+La información se almacena de forma persistente en una carpeta del proyecto.
 
 ### BM25
 
-BM25 es un método para buscar información utilizando las palabras de una consulta.
+BM25 es un método de búsqueda por palabras clave.
 
-Por ejemplo, si preguntamos por "instalación de Python", BM25 puede identificar fragmentos del documento donde aparezcan esas palabras y darles una puntuación según su relevancia.
+Permite identificar fragmentos relacionados con los términos utilizados en una pregunta.
 
-Su función es diferente de la búsqueda vectorial:
-
-- BM25 se concentra principalmente en las palabras.
-- La búsqueda vectorial intenta encontrar similitud de significado.
+Por ejemplo, si el usuario pregunta por "requisitos de instalación", BM25 puede localizar fragmentos que contengan esas palabras.
 
 ### Búsqueda híbrida
 
-La búsqueda híbrida consiste en combinar dos formas de buscar información.
+La búsqueda híbrida combina dos métodos:
 
-En nuestro proyecto utilizamos BM25 y la búsqueda vectorial de ChromaDB.
+- BM25, que busca coincidencias relevantes entre palabras.
+- Búsqueda vectorial con ChromaDB, que busca similitud de significado.
 
-Después combinamos sus resultados mediante un método llamado RRF (*Reciprocal Rank Fusion*), que considera las posiciones de los fragmentos en las listas de resultados.
+Después se combinan los resultados utilizando RRF, un método que considera la posición de los fragmentos en los resultados de ambas búsquedas.
 
-Decidimos utilizar ambas búsquedas porque pueden complementarse: una ayuda a encontrar palabras específicas y la otra a reconocer información relacionada por su significado.
+Elegí esta combinación porque los dos métodos pueden complementarse.
 
 ### Pytest
 
-Pytest es una herramienta para realizar pruebas automáticas en Python.
+Pytest es una herramienta para realizar pruebas automatizadas en Python.
 
-Nos permite comprobar si algunas partes del código funcionan como esperamos.
+Permite comprobar partes del programa y detectar errores.
 
-Por ejemplo, podemos probar la gestión del estado de un documento sin necesidad de ejecutar toda la aplicación.
-
-También podemos simular respuestas de servicios externos para probar nuestra lógica sin hacer llamadas reales a Gemini.
+En algunas pruebas utilicé simulaciones, conocidas como mocks, para verificar componentes sin depender de llamadas reales a Gemini o a la base vectorial.
 
 ### Docker y Docker Compose
 
 Docker permite ejecutar aplicaciones dentro de contenedores.
 
-Un contenedor reúne el programa y las dependencias necesarias para que pueda funcionar en un entorno preparado.
+Un contenedor reúne el programa y las dependencias necesarias para ejecutarlo en un entorno preparado.
 
-Docker Compose sirve para configurar y ejecutar varios contenedores juntos.
+Docker Compose permite iniciar varios servicios mediante un mismo archivo de configuración.
 
-En nuestro proyecto tenemos una configuración para dos servicios:
+En este proyecto se configuraron dos servicios:
 
-- El backend, desarrollado con FastAPI.
-- El frontend, desarrollado con Streamlit.
+- Backend con FastAPI.
+- Frontend con Streamlit.
 
-La configuración de Docker está creada, pero todavía está pendiente comprobar que los contenedores se construyan y ejecuten correctamente.
+La configuración fue probada en GitHub Codespaces y se verificó el funcionamiento de ambos servicios.
 
-## 4. ¿Cómo funciona nuestra aplicación?
+## 5. ¿Cómo funciona la aplicación?
 
-### Primera parte: cargar y procesar el documento
+### Primera parte: carga y procesamiento del PDF
 
-Cuando una persona carga un PDF desde Streamlit, el archivo se envía al backend mediante FastAPI.
+El usuario selecciona un PDF desde Streamlit.
 
-El sistema crea un identificador para ese trabajo. Este identificador permite consultar cómo avanza el procesamiento.
+La interfaz envía el archivo al backend mediante FastAPI.
+
+El backend crea un identificador único para el trabajo, llamado `job_id`.
+
+Este identificador permite consultar el estado de procesamiento del documento.
 
 Los estados utilizados son:
 
-- Pending: el trabajo está pendiente.
-- Processing: el documento se está procesando.
-- Completed: el procesamiento terminó correctamente.
-- Failed: ocurrió un error.
+- `Pending`: el documento está pendiente de procesamiento.
+- `Processing`: el documento se está procesando.
+- `Completed`: el procesamiento terminó correctamente.
+- `Failed`: ocurrió un error.
 
-Mientras se procesa el documento, el sistema utiliza PyMuPDF para extraer el contenido.
+Para evitar que el usuario tenga que esperar a que termine toda la tarea antes de recibir una respuesta de la API, se utilizan las tareas en segundo plano de FastAPI.
 
-Después divide el texto en fragmentos más pequeños.
+Durante el procesamiento, PyMuPDF extrae el texto y las imágenes.
 
-Esto es importante porque resulta más práctico buscar información dentro de partes de un documento que enviar todas sus páginas a la inteligencia artificial en cada pregunta.
+El texto se divide en fragmentos más pequeños y se generan embeddings para guardarlos en ChromaDB.
 
-Finalmente, se generan embeddings para esos fragmentos y se almacenan en ChromaDB.
-
-### Segunda parte: hacer una pregunta
+### Segunda parte: consultar el documento
 
 Cuando el documento está procesado, el usuario puede escribir una pregunta.
 
-El sistema realiza una búsqueda utilizando BM25 y ChromaDB.
+El backend utiliza BM25 y ChromaDB para buscar información relacionada con esa pregunta.
 
-Los resultados se combinan para seleccionar fragmentos relacionados con la pregunta.
+Después se combinan los resultados y se seleccionan los fragmentos más relevantes.
 
-Después enviamos esos fragmentos a Gemini junto con instrucciones para responder utilizando la información recuperada.
+Estos fragmentos se envían a Gemini junto con la pregunta y las instrucciones para responder utilizando solamente el contexto proporcionado.
 
-La aplicación presenta la respuesta y las fuentes correspondientes.
+Finalmente, la aplicación muestra la respuesta y las páginas utilizadas como fuentes.
 
 ### Tercera parte: mostrar imágenes
 
-Durante el procesamiento también extraemos imágenes del PDF.
+Durante el procesamiento también se extraen imágenes del PDF.
 
-Estas imágenes se guardan por separado y pueden consultarse desde la interfaz.
+Las imágenes se guardan por separado y se relacionan con las páginas de origen.
 
-Cuando una respuesta tiene fuentes relacionadas con determinadas páginas, la aplicación puede mostrar imágenes extraídas de esas páginas.
+Cuando las fuentes recuperadas corresponden a páginas que contienen imágenes, la interfaz puede mostrar esas imágenes junto con la respuesta.
 
-Actualmente, la relación entre las imágenes y las respuestas se basa principalmente en las páginas del documento. No estamos realizando un análisis completo del significado visual de cada imagen.
+Actualmente, la relación entre imágenes y texto se realiza principalmente mediante la página del documento.
 
-## 5. Organización del proyecto
+Este funcionamiento todavía puede mejorarse para identificar con mayor precisión qué imagen corresponde a cada fragmento de texto.
 
-El proyecto está organizado principalmente en las siguientes carpetas:
+## 6. Diagrama de arquitectura
+
+El siguiente diagrama muestra cómo se relacionan las partes principales de la aplicación.
+
+```mermaid
+flowchart TD
+    A["Usuario"] --> B["Streamlit: interfaz web"]
+    B --> C["FastAPI: backend"]
+
+    C --> D["Procesamiento de PDF"]
+    D --> E["PyMuPDF: texto e imágenes"]
+    E --> F["Fragmentación del texto"]
+    F --> G["Gemini: embeddings"]
+    G --> H["ChromaDB: base vectorial"]
+
+    C --> I["Consulta del usuario"]
+    I --> J["Búsqueda BM25"]
+    I --> K["Búsqueda vectorial en ChromaDB"]
+
+    H --> K
+    J --> L["Combinación de resultados: RRF"]
+    K --> L
+
+    L --> M["Gemini: generación de respuesta"]
+    M --> C
+    C --> B
+```
+
+### Explicación del diagrama
+
+El usuario interactúa con la aplicación desde Streamlit.
+
+Streamlit envía las solicitudes a FastAPI, que coordina el funcionamiento del sistema.
+
+Cuando se carga un PDF, se extrae su contenido, se divide el texto en fragmentos y se generan embeddings que se almacenan en ChromaDB.
+
+Cuando se realiza una pregunta, el sistema utiliza BM25 y ChromaDB para buscar información relevante.
+
+Después combina los resultados y envía el contexto seleccionado a Gemini.
+
+Finalmente, la respuesta vuelve al backend y se muestra en Streamlit, acompañada de sus fuentes y de las imágenes relacionadas que estén disponibles.
+
+## 7. Organización del proyecto
+
+La estructura principal es:
 
 ```text
 Prueba_RAG/
@@ -228,36 +286,110 @@ Prueba_RAG/
 |-- requirements.txt
 |-- requirements-docker.txt
 |-- .env.example
+|-- .gitignore
+|-- .dockerignore
 |-- README.md
 ```
 
-**Carpeta backend:** contiene la API y los servicios encargados de procesar los documentos, almacenar información y responder preguntas.
+**backend:** contiene la API y los servicios que procesan los documentos, realizan búsquedas y generan respuestas.
 
-**Carpeta frontend:** contiene la interfaz que utiliza la persona para interactuar con el sistema.
+**frontend:** contiene la interfaz visual desarrollada con Streamlit.
 
-**Carpeta tests:** contiene las pruebas automáticas.
+**tests:** contiene las pruebas automatizadas.
 
-**Archivo Dockerfile:** describe cómo preparar la imagen que utiliza la aplicación.
+**Dockerfile:** contiene las instrucciones para construir la imagen de Docker.
 
-**Archivo docker-compose.yml:** configura los servicios del frontend y el backend para ejecutarlos mediante Docker Compose.
+**docker-compose.yml:** configura los contenedores del frontend y el backend.
 
-**Archivo requirements.txt:** contiene las dependencias utilizadas en el entorno local de desarrollo.
+**requirements.txt:** contiene las dependencias del entorno local de desarrollo.
 
-**Archivo requirements-docker.txt:** contiene las dependencias principales seleccionadas para preparar los contenedores.
+**requirements-docker.txt:** contiene las dependencias principales utilizadas para construir los contenedores.
 
-**Archivo .env.example:** muestra qué variable debe configurar una persona que quiera ejecutar el proyecto, sin incluir claves privadas.
+**.env.example:** muestra cómo configurar la variable de Gemini sin incluir la clave real.
 
-## 6. ¿Cómo ejecutar el proyecto en un computador?
+**.gitignore:** evita incluir determinados archivos privados o innecesarios en Git.
 
-Para ejecutar el proyecto localmente se necesita Python y una clave de API de Google Gemini.
+**.dockerignore:** evita copiar archivos privados o innecesarios durante la construcción de las imágenes.
+
+**README.md:** contiene la documentación del proyecto.
+
+## 8. Decisiones técnicas
+
+### ¿Por qué utilicé Python?
+
+Porque es un lenguaje con el que puedo trabajar en backend, procesamiento de documentos, inteligencia artificial y pruebas automatizadas.
+
+### ¿Por qué FastAPI?
+
+Porque permite crear una API REST en Python y ofrece funcionalidades para validar solicitudes, recibir archivos y ejecutar tareas en segundo plano.
+
+### ¿Por qué Streamlit?
+
+Porque necesitaba desarrollar una interfaz sencilla para demostrar el funcionamiento del sistema.
+
+Streamlit permite construirla directamente en Python.
+
+### ¿Por qué dividí el texto en fragmentos?
+
+Porque un PDF puede contener muchas páginas y no resulta práctico enviar todo su contenido a Gemini cada vez que un usuario hace una pregunta.
+
+La fragmentación permite buscar primero las partes más relacionadas con la consulta.
+
+En esta implementación se aprovecha información de la distribución del texto en las páginas, como bloques y columnas, en lugar de depender únicamente de cortes por cantidad de caracteres.
+
+### ¿Por qué utilicé ChromaDB?
+
+Porque permite almacenar embeddings y recuperar fragmentos mediante búsqueda vectorial.
+
+Además, cuenta con almacenamiento persistente, lo que resulta útil para conservar los datos procesados.
+
+### ¿Por qué combiné BM25 y búsqueda vectorial?
+
+Porque cada método permite encontrar información de una manera diferente.
+
+BM25 considera las palabras utilizadas en la consulta, mientras que la búsqueda vectorial identifica similitud de significado.
+
+La combinación busca aprovechar ambas ventajas.
+
+### ¿Por qué utilicé tareas en segundo plano?
+
+Porque procesar un PDF y generar embeddings puede tardar.
+
+Con las tareas en segundo plano, la API puede devolver un identificador del trabajo y permitir que el usuario consulte su progreso.
+
+### ¿Por qué utilicé Docker Compose?
+
+Porque permite configurar y ejecutar los dos componentes principales de la aplicación con un solo comando.
+
+Esto facilita preparar un entorno de prueba sin iniciar cada servicio manualmente.
+
+## 9. Configuración del proyecto
+
+Para utilizar la aplicación se necesita una clave de API de Google Gemini.
+
+Se debe crear un archivo `.env` en la carpeta principal.
+
+Su contenido debe ser:
+
+```dotenv
+GEMINI_API_KEY=tu_clave_de_gemini
+```
+
+El valor de ejemplo se debe reemplazar por una clave válida.
+
+**Importante:** el archivo `.env` no debe publicarse en GitHub ni compartirse con otras personas.
+
+El repositorio incluye `.env.example` como referencia.
+
+## 10. Ejecución local
+
+Para ejecutar el proyecto localmente se necesita Python y una clave válida de Gemini.
 
 ### Paso 1. Descargar el proyecto
 
-Descargar el código desde el repositorio de GitHub o clonarlo utilizando Git.
+Descargar el repositorio desde GitHub o clonarlo utilizando Git.
 
 ### Paso 2. Crear un entorno virtual
-
-El entorno virtual permite instalar las librerías del proyecto de forma separada de otros programas de Python.
 
 En Windows, dentro de la carpeta del proyecto, ejecutar:
 
@@ -265,7 +397,7 @@ En Windows, dentro de la carpeta del proyecto, ejecutar:
 python -m venv .venv
 ```
 
-Activarlo:
+Activarlo con:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
@@ -279,21 +411,11 @@ python -m pip install -r requirements.txt
 
 ### Paso 4. Configurar Gemini
 
-Crear un archivo llamado `.env` en la carpeta principal.
+Crear el archivo `.env` con la clave correspondiente.
 
-Agregar la variable:
+### Paso 5. Iniciar el backend
 
-```dotenv
-GEMINI_API_KEY=tu_clave_de_gemini
-```
-
-Es necesario reemplazar el valor de ejemplo por una clave propia.
-
-No se debe publicar este archivo en GitHub.
-
-### Paso 5. Ejecutar el backend
-
-En una terminal, ejecutar:
+En una terminal:
 
 ```powershell
 python -m uvicorn backend.app.main:aplicacion --reload
@@ -303,13 +425,13 @@ El backend estará disponible en:
 
 http://localhost:8000
 
-FastAPI también ofrece una página para consultar y probar los endpoints:
+La documentación automática de FastAPI estará disponible en:
 
 http://localhost:8000/docs
 
-### Paso 6. Ejecutar el frontend
+### Paso 6. Iniciar el frontend
 
-Abrir otra terminal y ejecutar:
+Abrir una segunda terminal y ejecutar:
 
 ```powershell
 python -m streamlit run frontend/app.py
@@ -319,82 +441,150 @@ La interfaz estará disponible en:
 
 http://localhost:8501
 
-Es necesario mantener el backend y el frontend en ejecución para utilizar la aplicación.
+Para utilizar el sistema se deben mantener los dos servicios en ejecución.
 
-## 7. Ejecución con Docker Compose
+## 11. Ejecución con Docker Compose
 
-El proyecto incluye archivos de configuración para ejecutar el backend y el frontend mediante contenedores.
+El proyecto incluye un `Dockerfile` y un archivo `docker-compose.yml`.
 
-Con Docker y Docker Compose instalados, y después de crear el archivo `.env`, el comando previsto es:
+Estos archivos permiten construir y ejecutar los servicios del backend y frontend utilizando Docker Compose.
+
+Primero se debe crear y configurar el archivo `.env` con una clave válida de Gemini.
+
+Después, desde la carpeta principal, ejecutar:
 
 ```bash
 docker compose up --build
 ```
 
-Este comando indica que Docker debe construir las imágenes necesarias y ejecutar los servicios.
+Este comando construye las imágenes y ejecuta ambos servicios.
 
-La configuración está preparada, pero todavía no ha sido verificada mediante una ejecución completa en Docker.
+Las direcciones locales previstas son:
 
-## 8. Pruebas realizadas
+- FastAPI: http://localhost:8000
+- Streamlit: http://localhost:8501
 
-Se crearon tres pruebas automatizadas utilizando Pytest.
+Para detener los servicios:
 
-Estas pruebas revisan:
+```bash
+docker compose down
+```
+
+### Verificación realizada
+
+La configuración fue probada en GitHub Codespaces.
+
+Durante la prueba se verificó lo siguiente:
+
+1. Construcción correcta de las imágenes de Docker.
+2. Inicio del backend y frontend.
+3. Respuesta correcta de FastAPI.
+4. Carga de un documento PDF desde Streamlit.
+5. Procesamiento e indexación de 29 fragmentos.
+6. Consulta en lenguaje natural utilizando Gemini.
+7. Presentación de una respuesta con fuentes correspondientes a páginas del documento.
+8. Visualización de una imagen extraída del PDF.
+
+Esta prueba permitió comprobar el flujo principal de la aplicación dentro de contenedores.
+
+No significa que la aplicación haya sido probada para todos los escenarios ni que esté lista para uso en producción.
+
+## 12. Pruebas automatizadas
+
+Se desarrollaron tres pruebas utilizando Pytest.
+
+Estas pruebas verifican:
 
 1. El funcionamiento básico del gestor de trabajos.
-2. La lógica de integración con Gemini utilizando una respuesta simulada.
+2. La lógica del servicio Gemini utilizando una respuesta simulada.
 3. La búsqueda híbrida utilizando componentes simulados.
 
-Para ejecutarlas:
+Para ejecutar las pruebas:
 
 ```powershell
 python -m pytest tests -v
 ```
 
-Durante el desarrollo, las tres pruebas terminaron correctamente.
+Durante el desarrollo local, las tres pruebas terminaron correctamente.
 
-También realizamos comprobaciones manuales del procesamiento de PDF, las búsquedas y la visualización de imágenes.
+Además, se realizaron pruebas manuales de procesamiento documental, búsquedas, consulta de fuentes y visualización de imágenes.
 
-Es importante aclarar que tres pruebas no cubren toda la aplicación. Todavía podrían existir errores en situaciones que no hemos probado.
+Es importante aclarar que las pruebas automatizadas cubren algunas partes del sistema, pero todavía no todos los casos posibles.
 
-## 9. Dificultades encontradas
+## 13. Manejo de errores
 
-Durante el desarrollo aparecieron algunos inconvenientes que nos permitieron aprender sobre la integración de herramientas.
+Durante el desarrollo se presentaron algunas dificultades relacionadas con la disponibilidad del servicio Gemini.
 
-Uno de ellos fue la disponibilidad de Gemini. En algunas consultas el servicio respondió con errores temporales, por lo que incorporamos reintentos para ciertos errores.
+En ciertas solicitudes se recibieron errores temporales del proveedor externo.
 
-También trabajamos en la organización de los documentos y la identificación de fragmentos, para poder relacionar las búsquedas con el archivo seleccionado.
+Por eso se incorporó un mecanismo de reintentos para determinadas situaciones, como errores temporales del servicio o límites de solicitudes.
 
-Otra dificultad fue preparar Docker, debido a que nuestro computador de desarrollo no cumple cómodamente con los requisitos para ejecutarlo. Por eso preparamos los archivos de configuración y dejamos pendiente su validación en un entorno compatible.
+También se añadieron mensajes para distinguir algunos errores de conexión y tiempos de espera en la interfaz.
 
-## 10. Limitaciones del proyecto
+El backend registra determinadas operaciones y errores para facilitar su revisión.
 
-Este proyecto es un prototipo funcional desarrollado con fines de evaluación técnica.
+Estas medidas ayudan a identificar y manejar algunos fallos, aunque todavía pueden mejorarse.
+
+## 14. Dificultades encontradas
+
+### Integración con Gemini
+
+Durante algunas consultas, Gemini presentó errores temporales de disponibilidad.
+
+Esto permitió identificar la necesidad de controlar fallos de servicios externos y evitar depender de una sola respuesta.
+
+### Organización de documentos
+
+También fue necesario identificar los fragmentos de cada documento para relacionar correctamente las búsquedas con el archivo seleccionado.
+
+### Ejecución de Docker
+
+El computador utilizado para el desarrollo tenía recursos limitados para ejecutar Docker Desktop.
+
+Por esta razón, utilicé GitHub Codespaces como entorno Linux para realizar las pruebas de los contenedores.
+
+Durante la primera ejecución se identificó que el backend intentaba abrir automáticamente un archivo de prueba que no existía dentro del contenedor.
+
+Se corrigió el inicio del backend para que no dependiera de ese archivo.
+
+Después de la corrección se comprobó el funcionamiento del sistema con un PDF real de prueba.
+
+## 15. Limitaciones conocidas
+
+Este proyecto es un prototipo funcional desarrollado para una evaluación técnica.
 
 Actualmente presenta algunas limitaciones:
 
-- Depende de la disponibilidad del servicio de Gemini para generar respuestas y embeddings.
+- La generación de embeddings y respuestas depende de la disponibilidad del servicio Gemini.
 - La extracción de tablas como estructuras independientes no está implementada completamente.
-- Las imágenes se relacionan principalmente con las páginas del PDF, sin interpretar todo su contenido visual.
-- El procesamiento de documentos utiliza tareas en segundo plano de FastAPI, no una cola de trabajos distribuida.
-- Algunas funcionalidades se han probado manualmente, pero no todas cuentan con pruebas automáticas.
-- La ejecución mediante Docker Compose todavía requiere validación.
+- La relación entre imágenes y fragmentos de texto se realiza principalmente mediante las páginas del documento.
+- No se interpreta completamente el contenido visual de diagramas e imágenes.
+- El procesamiento utiliza tareas en segundo plano de FastAPI, no una cola de procesamiento distribuida.
+- No se implementaron interfaces formales para sustituir fácilmente todos los proveedores externos.
+- Las pruebas automatizadas todavía no cubren toda la aplicación.
+- La ejecución principal fue verificada en Docker Compose, pero no se realizaron pruebas de carga ni de escalabilidad para producción.
 
-## 11. Posibles mejoras
+## 16. Posibles mejoras
 
-En una siguiente versión sería posible:
+En una versión futura se podría:
 
-- Mejorar la extracción de tablas.
-- Implementar una cola de trabajos para procesar documentos de manera más robusta.
-- Ampliar la cobertura de las pruebas automáticas.
-- Agregar límites y validaciones adicionales para los archivos cargados.
-- Mejorar la relación entre imágenes y fragmentos de texto.
-- Incorporar mecanismos de seguimiento y registro de errores más completos.
+- Mejorar la extracción estructurada de tablas.
+- Asociar con mayor precisión imágenes y fragmentos mediante sus coordenadas.
+- Implementar una arquitectura más desacoplada mediante interfaces.
+- Utilizar una cola de trabajos para procesar grandes cantidades de documentos.
+- Ampliar las pruebas automatizadas.
+- Añadir validaciones y límites de seguridad adicionales para los PDF.
+- Mejorar el registro y seguimiento de errores.
+- Realizar pruebas de rendimiento con varios documentos.
 
-## 12. Conclusión
+## 17. Conclusión
 
-Con este proyecto aprendimos a integrar diferentes herramientas de Python para construir una aplicación que permite consultar información almacenada en documentos PDF.
+Este proyecto permitió desarrollar una aplicación que combina el procesamiento de documentos PDF con búsquedas y generación de respuestas mediante inteligencia artificial.
 
-Uno de los aprendizajes principales fue comprender que un sistema RAG no consiste solamente en enviar preguntas a una inteligencia artificial. También necesita preparar los documentos, almacenar información, buscar contenido relevante y presentar resultados de una manera comprensible.
+Uno de los aprendizajes principales fue comprender que un sistema RAG no consiste solamente en enviar preguntas a Gemini.
 
-El proyecto permitió practicar el desarrollo de API, la integración de servicios externos, el manejo de documentos, las búsquedas y las pruebas de software.
+También requiere preparar los documentos, extraer información, dividir el contenido, generar embeddings, almacenar datos y recuperar los fragmentos adecuados antes de producir una respuesta.
+
+Durante el desarrollo pude practicar la integración de API, bases de datos vectoriales, procesamiento de PDF, pruebas automatizadas y ejecución de aplicaciones mediante Docker.
+
+El resultado es un prototipo funcional que permite consultar documentos PDF y mostrar respuestas con sus fuentes e imágenes relacionadas.
