@@ -328,8 +328,20 @@ if pregunta:
                 f"{error.response.status_code}"
             )
 
-        except requests.exceptions.RequestException:
+       
+        except requests.exceptions.Timeout:
             st.error(
-                "No fue posible comunicarse con FastAPI. "
-                "Comprueba que el servidor esté encendido."
+                "La consulta tardó demasiado tiempo. "
+                "FastAPI no respondió dentro del tiempo establecido."
             )
+
+        except requests.exceptions.ConnectionError:
+            st.error(
+                "No se pudo establecer conexión con FastAPI."
+            )
+
+        except requests.exceptions.RequestException as error:
+            st.error(
+                f"Ocurrió un error al consultar FastAPI: {type(error).__name__}"
+            )
+
