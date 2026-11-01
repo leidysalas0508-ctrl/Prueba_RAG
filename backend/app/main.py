@@ -23,30 +23,19 @@ aplicacion = FastAPI(
 )
 
 
-# Definir el formato de las preguntas
-class SolicitudPregunta(BaseModel):
-    pregunta: str
-
-
-# Preparar el buscador cuando inicia la aplicación
-fragmentos = crear_fragmentos(
-    "data/procesados/resultado_documento.json"
-)
-
-buscador = BuscadorHibrido(fragmentos)
-
-
+# Comprobar que el servidor está funcionando
 @aplicacion.get("/")
 def verificar_servidor():
     return {
         "mensaje": "El sistema RAG está funcionando"
     }
 
-
+# Definir los datos necesarios para realizar una pregunta
 class SolicitudPregunta(BaseModel):
     pregunta: str
     documento_id: str
-    
+
+ # Recibir y responder preguntas sobre un documento   
 @aplicacion.post("/preguntar")
 def responder_pregunta(solicitud: SolicitudPregunta):
 
