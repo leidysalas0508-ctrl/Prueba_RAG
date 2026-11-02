@@ -227,7 +227,7 @@ if pregunta:
                     "pregunta": pregunta,
                     "documento_id": documento_id
                 },
-                timeout=120
+                timeout=300
             )
 
             respuesta_api.raise_for_status()
